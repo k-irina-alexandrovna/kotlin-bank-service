@@ -1,9 +1,9 @@
 package ru.kotlin.bankservice.controller
 
-import ru.kotlin.bankservice.model.Account
 import ru.kotlin.bankservice.service.AccountService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import ru.kotlin.bankservice.model.dto.AccountDTO
 
 @RestController()
 @RequestMapping("accounts")
@@ -20,14 +20,7 @@ class AccountController (
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody account: Account) = accountService.create(account)
-
-    @PutMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
-    fun update(
-        @PathVariable id: Long,
-        @RequestBody account: Account
-    ) = accountService.update(id, account)
+    fun create(@RequestBody accountDTO: AccountDTO) = accountService.create(accountDTO)
 
     @DeleteMapping("{id}")
     fun delete(@PathVariable id: Long) = accountService.delete(id)

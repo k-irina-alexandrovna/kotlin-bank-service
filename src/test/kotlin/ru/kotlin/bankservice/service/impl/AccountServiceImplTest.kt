@@ -6,30 +6,36 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import ru.kotlin.bankservice.model.Account
-import ru.kotlin.bankservice.model.User
+import ru.kotlin.bankservice.model.dto.AccountDTO
+import ru.kotlin.bankservice.model.entity.Account
+import ru.kotlin.bankservice.model.entity.User
+import ru.kotlin.bankservice.model.enums.Currency
 import ru.kotlin.bankservice.repository.AccountRepository
 import ru.kotlin.bankservice.service.AccountService
+import ru.kotlin.bankservice.service.UserService
 import java.math.BigDecimal
 import java.time.LocalDate
 
 internal class AccountServiceImplTest {
 
     private val accountRepository = mockk<AccountRepository>(relaxUnitFun = true)
-    private val accountService: AccountService = AccountServiceImpl(accountRepository)
+    private val userService = mockk<UserService>(relaxUnitFun = true)
 
+    private val accountService: AccountService = AccountServiceImpl(
+        accountRepository, userService
+    )
 
     @Test
     fun `getAll should return all accounts`() {
         // given
         val account1 = Account(
-            id = 1L,
             number = 111111111,
+            currency = Currency.RUB,
             user = user
         )
         val account2 = Account(
-            id = 1L,
             number = 222222222,
+            currency = Currency.RUB,
             user = user
         )
         every { accountRepository.findAll() } returns listOf(account1, account2)
@@ -47,17 +53,17 @@ internal class AccountServiceImplTest {
     fun `get should return account`() {
         // given
         val account = Account(
-            id = 1L,
             number = 111111111,
+            currency = Currency.RUB,
             user = user
         )
         every { accountRepository.getOne(any()) } returns account
 
         // when
-        val receivedAccount = accountService.get(account.id!!)
+        val receivedAccount = accountService.get(account.id)
 
         // then
-        verify { accountRepository.getOne(account.id!!) }
+        verify { accountRepository.getOne(account.id) }
         assertEquals(account, receivedAccount)
     }
 
@@ -65,39 +71,26 @@ internal class AccountServiceImplTest {
     fun `create should create new account`() {
         // given
         val account = Account(
-            id = 1L,
             number = 111111111,
+            currency = Currency.RUB,
             user = user
         )
+        val accountDTO = AccountDTO(
+            number = 111111111,
+            currency = Currency.RUB.name,
+            userId = user.id
+        )
+        every { userService.get(any())} returns user
+        every { userService.isExists(any())} returns true
         every { accountRepository.save(account) } returns account
 
         // when
-        val newAccount = accountService.create(account)
+        val newAccount = accountService.create(accountDTO)
 
         // then
         verify { accountRepository.save(account) }
         assertEquals(account, newAccount)
     }
-
-    @Test
-    fun `update should update account`() {
-        // given
-        val account = Account(
-            id = 1L,
-            number = 111111111,
-            user = user
-        )
-        val newAccount = account.copy(number = 3333333)
-        every { accountRepository.save(newAccount) } returns newAccount
-
-        // when
-        val updatedAccount = accountService.update(account.id!!, newAccount)
-
-        // then
-        verify { accountRepository.save(newAccount) }
-        assertEquals(newAccount.number, updatedAccount.number)
-    }
-
 
     companion object{
         private val user = User(
@@ -105,7 +98,7 @@ internal class AccountServiceImplTest {
             lastName = "Иванов",
             firstName = "Иван",
             middleName = "Иванович",
-            birthday = LocalDate.MIN,
+            birthDate = LocalDate.MIN,
             passport = "1234567890"
         )
     }

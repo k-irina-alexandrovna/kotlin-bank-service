@@ -1,17 +1,21 @@
 package ru.kotlin.bankservice.service
 
-import ru.kotlin.bankservice.model.User
-import java.util.*
+import org.springframework.transaction.annotation.Transactional
+import ru.kotlin.bankservice.model.entity.User
+import ru.kotlin.bankservice.model.dto.UserDTO
 
+@Transactional
 interface UserService {
 
     fun getAll(): Iterable<User>
 
-    fun get(id: Long): Optional<User>
+    fun get(id: Long): User
 
-    fun create(user: User): User
+    fun create(userDTO: UserDTO): User
 
-    fun update(id: Long, user: User): User
+    fun update(id: Long, userDTO: UserDTO): User
 
     fun delete(id: Long)
+
+    fun isExists(id: Long): Boolean
 }

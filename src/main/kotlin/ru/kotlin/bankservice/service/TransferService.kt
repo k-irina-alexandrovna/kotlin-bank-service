@@ -1,10 +1,12 @@
 package ru.kotlin.bankservice.service
 
-import ru.kotlin.bankservice.model.Account
+import org.springframework.transaction.annotation.Transactional
+import ru.kotlin.bankservice.model.dto.TransferDTO
+import ru.kotlin.bankservice.model.entity.Account
 import java.math.BigDecimal
 
+@Transactional
 interface TransferService {
 
-    fun pay(id: Long, value: BigDecimal): Account
-
+    fun execute(transferDTO: TransferDTO)
 }

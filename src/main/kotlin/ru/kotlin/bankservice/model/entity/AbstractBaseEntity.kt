@@ -1,4 +1,4 @@
-package ru.kotlin.bankservice.model
+package ru.kotlin.bankservice.model.entity
 
 import com.vladmihalcea.hibernate.type.array.IntArrayType
 import com.vladmihalcea.hibernate.type.array.StringArrayType
@@ -9,7 +9,6 @@ import com.vladmihalcea.hibernate.type.json.JsonStringType
 import org.hibernate.annotations.TypeDef
 import org.hibernate.annotations.TypeDefs
 import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
 import java.time.LocalDateTime
@@ -40,7 +39,7 @@ abstract class AbstractBaseEntity<PK : Serializable> : BaseEntity<PK>() {
 abstract class BaseEntity<PK : Serializable> : Serializable {
 
     @get:Transient
-    abstract var id: PK?
+    abstract var id: PK
 
     override fun toString(): String = "${this.javaClass.name}#$id"
 
@@ -57,7 +56,7 @@ abstract class BaseEntity<PK : Serializable> : Serializable {
 
     override fun hashCode(): Int {
         var hashCode = 17
-        hashCode += if (null == id) 0 else id!!.hashCode() * 31
+        hashCode += id.hashCode() * 31
         return hashCode
     }
 }
