@@ -47,8 +47,7 @@ class UserServiceImpl(
     private fun validate(userDTO: UserDTO)= (userDTO.firstName.isNotBlank()
             && userDTO.lastName.isNotBlank()
             && userDTO.passport.isNotBlank()
-            && userDTO.passport.length == 10
-            && userDTO.birthDate > LocalDate.now().minusYears(18))
+            && userDTO.passport.length == 10)
         .let { isValid ->
             if(!isValid) {
                 throw ValidationException("Failed to validate user $userDTO")

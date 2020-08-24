@@ -98,7 +98,6 @@ internal class AccountServiceImplTest {
             lastName = "Иванов",
             firstName = "Иван",
             middleName = "Иванович",
-            birthDate = LocalDate.MIN,
             passport = "1234567890"
         )
     }

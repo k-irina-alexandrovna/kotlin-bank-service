@@ -21,9 +21,6 @@ data class User(
         @Column(name = "middleName")
         val middleName: String = "",
 
-        @Column(name = "birth_date", nullable = false)
-        val birthDate: LocalDate,
-
         @JsonProperty("passportSerialNumber")
         @Column(name = "passport", unique = true, nullable = false)
         val passport: String,
