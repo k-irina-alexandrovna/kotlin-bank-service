@@ -3,10 +3,10 @@ package ru.kotlin.bankservice.service.impl
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import ru.kotlin.bankservice.model.dto.AccountDTO
+import ru.kotlin.bankservice.model.dto.AccountRequestDTO
 import ru.kotlin.bankservice.model.entity.Account
 import ru.kotlin.bankservice.model.entity.User
 import ru.kotlin.bankservice.model.enums.Currency
@@ -61,7 +61,7 @@ class AccountServiceImplTest {
         every { accountRepository.findById(any()) } returns Optional.of(account)
 
         // when
-        val receivedAccount = accountService.find(account.id)
+        val receivedAccount = accountService.get(account.id)
 
         // then
         verify { accountRepository.findById(account.id) }
@@ -71,7 +71,7 @@ class AccountServiceImplTest {
     @Test
     fun `create should create new account`() {
         // given
-        val accountDTO = AccountDTO(
+        val accountDTO = AccountRequestDTO(
             number = 111111111,
             currency = Currency.RUB.name,
             userId = user.id

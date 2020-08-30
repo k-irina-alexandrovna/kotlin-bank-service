@@ -1,9 +1,8 @@
 package ru.kotlin.bankservice.service.validators
 
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import ru.kotlin.bankservice.model.dto.TransferDTO
+import ru.kotlin.bankservice.model.dto.TransferRequestDTO
 import java.math.BigDecimal
 import kotlin.test.assertFailsWith
 
@@ -14,7 +13,7 @@ internal class TransferValidatorServiceTest {
     @Test
     fun `validate transferDTO should return null for ok`() {
         // given
-        val transferDTO = TransferDTO(
+        val transferDTO = TransferRequestDTO(
             senderAccountNumber = 12345,
             receiverAccountNumber = 67890,
             amount = BigDecimal.TEN,
@@ -30,7 +29,7 @@ internal class TransferValidatorServiceTest {
     @Test
     fun `validate transferDTO should return error for empty senderAccountNumber`() {
         // given
-        val transferDTO = TransferDTO(
+        val transferDTO = TransferRequestDTO(
             receiverAccountNumber = 67890,
             amount = BigDecimal.TEN,
             operation = "WITHDRAWAL"
@@ -44,7 +43,7 @@ internal class TransferValidatorServiceTest {
     @Test
     fun `validate transferDTO should return error for empty receiverAccountNumber`() {
         // given
-        val transferDTO = TransferDTO(
+        val transferDTO = TransferRequestDTO(
             senderAccountNumber = 12345,
             amount = BigDecimal.TEN,
             operation = "WITHDRAWAL"
@@ -58,7 +57,7 @@ internal class TransferValidatorServiceTest {
     @Test
     fun `validate transferDTO should return error for empty operation`() {
         // given
-        val transferDTO = TransferDTO(
+        val transferDTO = TransferRequestDTO(
             senderAccountNumber = 12345,
             receiverAccountNumber = 67890,
             amount = BigDecimal.TEN
@@ -72,7 +71,7 @@ internal class TransferValidatorServiceTest {
     @Test
     fun `validate transferDTO should return error for any operation`() {
         // given
-        val transferDTO = TransferDTO(
+        val transferDTO = TransferRequestDTO(
             senderAccountNumber = 12345,
             receiverAccountNumber = 67890,
             amount = BigDecimal.TEN,
@@ -87,7 +86,7 @@ internal class TransferValidatorServiceTest {
     @Test
     fun `validate transferDTO should return error for ZERO amount`() {
         // given
-        val transferDTO = TransferDTO(
+        val transferDTO = TransferRequestDTO(
             senderAccountNumber = 12345,
             receiverAccountNumber = 67890,
             amount = BigDecimal.ZERO,
@@ -102,7 +101,7 @@ internal class TransferValidatorServiceTest {
     @Test
     fun `validate transferDTO should return error for empty amount`() {
         // given
-        val transferDTO = TransferDTO(
+        val transferDTO = TransferRequestDTO(
             senderAccountNumber = 12345,
             receiverAccountNumber = 67890,
             operation = "WITHDRAWAL"

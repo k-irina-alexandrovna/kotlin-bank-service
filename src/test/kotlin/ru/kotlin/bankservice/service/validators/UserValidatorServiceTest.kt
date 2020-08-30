@@ -1,9 +1,8 @@
 package ru.kotlin.bankservice.service.validators
 
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import ru.kotlin.bankservice.model.dto.UserDTO
+import ru.kotlin.bankservice.model.dto.UserRequestDTO
 import kotlin.test.assertFailsWith
 
 internal class UserValidatorServiceTest {
@@ -13,7 +12,7 @@ internal class UserValidatorServiceTest {
     @Test
     fun `validate userDTO should return null for ok`() {
         // given
-        val userDTO = UserDTO(
+        val userDTO = UserRequestDTO(
             fullName = "Иванов Иван Иванович",
             passport = "1234567890"
         )
@@ -27,7 +26,7 @@ internal class UserValidatorServiceTest {
     @Test
     fun `validate userDTO should return error for empty fullName`() {
         // given
-        val userDTO = UserDTO(
+        val userDTO = UserRequestDTO(
             passport = "1234567890"
         )
         // when - then
@@ -39,7 +38,7 @@ internal class UserValidatorServiceTest {
     @Test
     fun `validate userDTO should return error for empty passport`() {
         // given
-        val userDTO = UserDTO(
+        val userDTO = UserRequestDTO(
             fullName = "Иванов Иван Иванович"
         )
         // when - then

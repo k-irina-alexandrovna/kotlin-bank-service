@@ -1,10 +1,10 @@
 package ru.kotlin.bankservice.service.impl
 
-import ru.kotlin.bankservice.model.entity.Account
 import org.springframework.stereotype.Service
 import ru.kotlin.bankservice.exception.Error
 import ru.kotlin.bankservice.exception.ValidationException
-import ru.kotlin.bankservice.model.dto.TransferDTO
+import ru.kotlin.bankservice.model.dto.TransferRequestDTO
+import ru.kotlin.bankservice.model.entity.Account
 import ru.kotlin.bankservice.model.enums.BankOperation
 import ru.kotlin.bankservice.service.AccountService
 import ru.kotlin.bankservice.service.OperationService
@@ -19,27 +19,29 @@ class TransferServiceImpl(
     private val validator: Validator
 ): TransferService {
 
-    override fun transfer(transferDTO: TransferDTO) {
-        validator.validate(transferDTO)
-        with(transferDTO){
-            val senderAccount = accountService.findByNumber(senderAccountNumber!!)
-            val receiverAccount = accountService.findByNumber(receiverAccountNumber!!)
-            checkAccountsBeforeTransfer(senderAccount, receiverAccount)
+    override fun transfer(transferRequestDTO: TransferRequestDTO): Unit = transferRequestDTO
+        .also { validator.validate(transferRequestDTO) }
+        .run {
+            with(transferRequestDTO){
+                val senderAccount = accountService.findByNumber(senderAccountNumber!!)
+                val receiverAccount = accountService.findByNumber(receiverAccountNumber!!)
+                checkAccountsBeforeTransfer(senderAccount, receiverAccount)
 
-            when(BankOperation.valueOf(operation!!)) {
-                BankOperation.DEPOSIT -> makeTransfer(senderAccount, receiverAccount, amount!!)
-                BankOperation.WITHDRAWAL -> makeTransfer(receiverAccount, senderAccount, amount!!)
+                when(BankOperation.valueOf(operation!!)) {
+                    BankOperation.DEPOSIT -> makeTransfer(senderAccount, receiverAccount, amount!!)
+                    BankOperation.WITHDRAWAL -> makeTransfer(receiverAccount, senderAccount, amount!!)
+                }
             }
         }
-    }
 
-    private fun makeTransfer(senderAccount: Account, receiverAccount: Account, amount: BigDecimal){
-        checkAccountBalance(senderAccount, amount)
-        senderAccount.copy(balance = senderAccount.balance.minus(amount))
-            .let { accountService.update(it) }
-        receiverAccount.copy(balance = receiverAccount.balance.plus(amount))
-            .let { accountService.update(it) }
-    }
+    private fun makeTransfer(senderAccount: Account, receiverAccount: Account, amount: BigDecimal) = senderAccount
+        .apply {  checkAccountBalance(senderAccount, amount) }
+        .run {
+            senderAccount.copy(balance = senderAccount.balance.minus(amount))
+                .let { accountService.update(it) }
+            receiverAccount.copy(balance = receiverAccount.balance.plus(amount))
+                .let { accountService.update(it) }
+        }
 
     private fun checkAccountBalance(account: Account, amount: BigDecimal): Error? {
         if(account.balance < amount) {

@@ -1,13 +1,12 @@
 package ru.kotlin.bankservice.service.impl
 
+import org.springframework.stereotype.Service
+import ru.kotlin.bankservice.exception.ObjectAlreadyExists
+import ru.kotlin.bankservice.exception.ObjectNotFoundException
+import ru.kotlin.bankservice.model.dto.UserRequestDTO
 import ru.kotlin.bankservice.model.entity.User
 import ru.kotlin.bankservice.repository.UserRepository
 import ru.kotlin.bankservice.service.UserService
-import org.springframework.stereotype.Service
-import ru.kotlin.bankservice.exception.ObjectNotFoundException
-import ru.kotlin.bankservice.exception.ObjectAlreadyExists
-import ru.kotlin.bankservice.model.dto.UserDTO
-import ru.kotlin.bankservice.model.dto.fromDTOtoEntity
 import ru.kotlin.bankservice.service.validators.Validator
 
 @Service
@@ -30,19 +29,29 @@ class UserServiceImpl(
             }
         }
 
-    override fun create(userDTO: UserDTO): User {
-        validator.validate(userDTO)
-        checkIsPassportExists(userDTO.passport!!)
-        return userDTO.fromDTOtoEntity().let { userRepository.save(it)  }
+    override fun create(userRequestDTO: UserRequestDTO): User {
+        validator.validate(userRequestDTO)
+        checkIsPassportExists(userRequestDTO.passport!!)
+        User(
+            fullName = userRequestDTO.fullName!!,
+            passport = userRequestDTO.passport
+        ).let {
+            return userRepository.save(it)
+        }
     }
 
-    override fun update(id: Long, userDTO: UserDTO): User {
-        validator.validate(userDTO)
+    override fun update(id: Long, userRequestDTO: UserRequestDTO): User {
+        validator.validate(userRequestDTO)
         if(!isExists(id)){
             throw ObjectNotFoundException("Клиент с id $id не найден")
         }
-        checkIsPassportExists(userDTO.passport!!)
-        return userDTO.fromDTOtoEntity().let { userRepository.save(it) }
+        checkIsPassportExists(userRequestDTO.passport!!)
+        User(
+            fullName = userRequestDTO.fullName!!,
+            passport = userRequestDTO.passport
+        ).let {
+            return userRepository.save(it)
+        }
     }
 
     override fun delete(id: Long) = userRepository.deleteById(id)

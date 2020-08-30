@@ -5,8 +5,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import ru.kotlin.bankservice.model.dto.UserDTO
-import ru.kotlin.bankservice.model.dto.fromDTOtoEntity
+import ru.kotlin.bankservice.model.dto.UserRequestDTO
 import ru.kotlin.bankservice.model.entity.User
 import ru.kotlin.bankservice.repository.UserRepository
 import ru.kotlin.bankservice.service.UserService
@@ -63,7 +62,7 @@ internal class UserServiceImplTest {
     @Test
     fun `create should create new user`() {
         // given
-        val userDTO = UserDTO(
+        val userDTO = UserRequestDTO(
             fullName = "Иванов Иван Иванович",
             passport = "1234567890"
         )
@@ -82,29 +81,5 @@ internal class UserServiceImplTest {
         verify { validator.validate(userDTO) }
         verify { userRepository.save(user) }
         Assertions.assertEquals(user, createdUser)
-    }
-
-    @Test
-    fun `update should update exists user`() {
-        // given
-        val userDTO = UserDTO(
-            id = 1L,
-            fullName = "Иванов Иван Иванович",
-            passport = "1234567890"
-        )
-        val user = userDTO.fromDTOtoEntity()
-
-        every { validator.validate(userDTO) } returns null
-        every { userRepository.existsById(userDTO.id!!) } returns true
-        every { userRepository.existsByPassport(userDTO.passport!!) } returns false
-        every { userRepository.save(user) } returns user
-
-        // when
-        val updatedUser = userService.update(userDTO.id!!, userDTO)
-
-        // then
-        verify { userRepository.save(user) }
-        verify { validator.validate(userDTO) }
-        Assertions.assertEquals(user, updatedUser)
     }
 }

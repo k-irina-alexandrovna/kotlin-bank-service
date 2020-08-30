@@ -1,11 +1,11 @@
 package ru.kotlin.bankservice.service.validators
 
 import org.springframework.stereotype.Service
-import ru.kotlin.bankservice.exception.ValidationException
-import ru.kotlin.bankservice.model.dto.UserDTO
 import ru.kotlin.bankservice.exception.Error
-import ru.kotlin.bankservice.model.dto.AccountDTO
-import ru.kotlin.bankservice.model.dto.TransferDTO
+import ru.kotlin.bankservice.exception.ValidationException
+import ru.kotlin.bankservice.model.dto.AccountRequestDTO
+import ru.kotlin.bankservice.model.dto.TransferRequestDTO
+import ru.kotlin.bankservice.model.dto.UserRequestDTO
 import ru.kotlin.bankservice.model.enums.BankOperation
 import ru.kotlin.bankservice.model.enums.Currency
 import java.math.BigDecimal
@@ -13,8 +13,8 @@ import java.math.BigDecimal
 @Service
 class ValidatorService: Validator {
 
-    override fun validate(user: UserDTO): Error? {
-        with(user) {
+    override fun validate(userRequest: UserRequestDTO): Error? {
+        with(userRequest) {
             if (fullName.isNullOrBlank()) {
                 throw ValidationException(Error.MONDATORY_FIELD_IS_EMPTY, "Поле 'Имя' не может быть пустым")
             }
@@ -25,8 +25,8 @@ class ValidatorService: Validator {
         }
     }
 
-    override fun validate(account: AccountDTO): Error? {
-        with(account) {
+    override fun validate(accountRequest: AccountRequestDTO): Error? {
+        with(accountRequest) {
             if (number == null){
                 throw ValidationException(Error.MONDATORY_FIELD_IS_EMPTY, "Поле 'Номер счёта' должно содержать числовое значение")
             }
@@ -40,8 +40,8 @@ class ValidatorService: Validator {
         }
     }
 
-    override fun validate(transfer: TransferDTO): Error? {
-        with (transfer) {
+    override fun validate(transferRequest: TransferRequestDTO): Error? {
+        with (transferRequest) {
             if (senderAccountNumber == null) {
                 throw ValidationException(
                     Error.MONDATORY_FIELD_IS_EMPTY, "Поле 'Номер счёта отправителя' должно содержать числовое значение"

@@ -1,9 +1,8 @@
 package ru.kotlin.bankservice.service.validators
 
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import ru.kotlin.bankservice.model.dto.AccountDTO
+import ru.kotlin.bankservice.model.dto.AccountRequestDTO
 import java.math.BigDecimal
 import kotlin.test.assertFailsWith
 
@@ -14,7 +13,7 @@ internal class AccountValidatorServiceTest {
     @Test
     fun `validate accountDTO should return null for ok`() {
         // given
-        val accountDTO = AccountDTO(
+        val accountDTO = AccountRequestDTO(
             number = 112345,
             currency = "RUB",
             userId = 1
@@ -29,7 +28,7 @@ internal class AccountValidatorServiceTest {
     @Test
     fun `validate accountDTO should return error for empty number`() {
         // given
-        val accountDTO = AccountDTO(
+        val accountDTO = AccountRequestDTO(
             currency = "RUB",
             userId = 1
         )
@@ -42,7 +41,7 @@ internal class AccountValidatorServiceTest {
     @Test
     fun `validate accountDTO should return error for empty currency`() {
         // given
-        val accountDTO = AccountDTO(
+        val accountDTO = AccountRequestDTO(
             number = 112345,
             balance = BigDecimal.TEN,
             userId = 1
@@ -56,7 +55,7 @@ internal class AccountValidatorServiceTest {
     @Test
     fun `validate accountDTO should return error for any currency`() {
         // given
-        val accountDTO = AccountDTO(
+        val accountDTO = AccountRequestDTO(
             number = 112345,
             currency = "XXX",
             userId = 1
@@ -70,7 +69,7 @@ internal class AccountValidatorServiceTest {
     @Test
     fun `validate accountDTO should return error for empty userId`() {
         // given
-        val accountDTO = AccountDTO(
+        val accountDTO = AccountRequestDTO(
             number = 112345,
             currency = "RUB"
         )
