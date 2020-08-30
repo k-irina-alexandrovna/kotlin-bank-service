@@ -1,1 +1,1 @@
-rootProject.name = "bank-service"
+rootProject.name = "ms-bank"

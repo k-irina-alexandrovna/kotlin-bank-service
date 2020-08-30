@@ -2,7 +2,7 @@ server:
   port: 8088
 spring:
   application:
-    name: bank-service
+    name: ms-bank
   profiles:
     active: dev
   h2:
