@@ -4,15 +4,12 @@ import ru.kotlin.bankservice.model.entity.User
 import java.time.LocalDate
 
 data class UserDTO(
-    val lastName: String,
-    val firstName: String,
-    val middleName: String,
-    val passport: String
+    val id: Long? = null,
+    val fullName: String? = null,
+    val passport: String? = null
 )
 
-fun UserDTO.fromDTO() = User(
-    lastName = this.lastName,
-    firstName = this.firstName,
-    middleName = this.middleName,
-    passport = this.passport
+fun UserDTO.fromDTOtoEntity() = User(
+    fullName = this.fullName!!,
+    passport = this.passport!!
 )

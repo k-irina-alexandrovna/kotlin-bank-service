@@ -8,5 +8,5 @@ import java.math.BigDecimal
 @Transactional
 interface TransferService {
 
-    fun execute(transferDTO: TransferDTO)
+    fun transfer(transferDTO: TransferDTO)
 }

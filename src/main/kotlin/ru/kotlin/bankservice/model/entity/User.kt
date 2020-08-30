@@ -12,16 +12,10 @@ data class User(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         override var id: Long = 0,
 
-        @Column(name = "lastName", nullable = false)
-        val lastName: String = "",
+        @Column(name = "full_name", nullable = false)
+        val fullName: String = "",
 
-        @Column(name = "firstName", nullable = false)
-        val firstName: String = "",
-
-        @Column(name = "middleName")
-        val middleName: String = "",
-
-        @JsonProperty("passportSerialNumber")
+        @JsonProperty("passport")
         @Column(name = "passport", unique = true, nullable = false)
         val passport: String,
 
@@ -34,6 +28,6 @@ data class User(
         val accounts: MutableList<Account> = mutableListOf()
 
 ): AbstractBaseEntity<Long>() {
-        fun getFullName() = "$lastName $firstName $middleName"
-        override fun toString()= "user: ${getFullName()}, passport: $passport, accounts: ${accounts.map { it.number }}"
+        override fun toString()=
+                "user: ${fullName}, passport: $passport, accounts: ${accounts.map { it.number }}"
 }

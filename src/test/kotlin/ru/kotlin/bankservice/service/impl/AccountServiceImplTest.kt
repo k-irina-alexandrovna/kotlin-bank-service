@@ -13,16 +13,17 @@ import ru.kotlin.bankservice.model.enums.Currency
 import ru.kotlin.bankservice.repository.AccountRepository
 import ru.kotlin.bankservice.service.AccountService
 import ru.kotlin.bankservice.service.UserService
-import java.math.BigDecimal
-import java.time.LocalDate
+import ru.kotlin.bankservice.service.validators.Validator
+import java.util.*
 
-internal class AccountServiceImplTest {
+class AccountServiceImplTest {
 
     private val accountRepository = mockk<AccountRepository>(relaxUnitFun = true)
     private val userService = mockk<UserService>(relaxUnitFun = true)
+    private val validator = mockk<Validator>(relaxUnitFun = true)
 
     private val accountService: AccountService = AccountServiceImpl(
-        accountRepository, userService
+        accountRepository, userService, validator
     )
 
     @Test
@@ -57,37 +58,40 @@ internal class AccountServiceImplTest {
             currency = Currency.RUB,
             user = user
         )
-        every { accountRepository.getOne(any()) } returns account
+        every { accountRepository.findById(any()) } returns Optional.of(account)
 
         // when
-        val receivedAccount = accountService.get(account.id)
+        val receivedAccount = accountService.find(account.id)
 
         // then
-        verify { accountRepository.getOne(account.id) }
+        verify { accountRepository.findById(account.id) }
         assertEquals(account, receivedAccount)
     }
 
     @Test
     fun `create should create new account`() {
         // given
-        val account = Account(
-            number = 111111111,
-            currency = Currency.RUB,
-            user = user
-        )
         val accountDTO = AccountDTO(
             number = 111111111,
             currency = Currency.RUB.name,
             userId = user.id
         )
-        every { userService.get(any())} returns user
+        val account = Account(
+            number = 111111111,
+            currency = Currency.RUB,
+            user = user
+        )
         every { userService.isExists(any())} returns true
+        every { accountRepository.existsByNumber(accountDTO.number!!) } returns false
+        every { validator.validate(accountDTO) } returns null
+        every { userService.get(any())} returns user
         every { accountRepository.save(account) } returns account
 
         // when
         val newAccount = accountService.create(accountDTO)
 
         // then
+        verify { validator.validate(accountDTO) }
         verify { accountRepository.save(account) }
         assertEquals(account, newAccount)
     }
@@ -95,9 +99,7 @@ internal class AccountServiceImplTest {
     companion object{
         private val user = User(
             id = 1L,
-            lastName = "Иванов",
-            firstName = "Иван",
-            middleName = "Иванович",
+            fullName = "Иванов Иван Иванович",
             passport = "1234567890"
         )
     }

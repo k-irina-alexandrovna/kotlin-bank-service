@@ -14,5 +14,5 @@ class TransferController(
 ) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody transferDTO: TransferDTO) = transferService.execute(transferDTO)
+    fun create(@RequestBody transferDTO: TransferDTO) = transferService.transfer(transferDTO)
 }

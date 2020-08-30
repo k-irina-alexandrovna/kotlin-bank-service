@@ -27,10 +27,10 @@ dependencies {
 
     runtimeOnly("com.h2database:h2")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-    }
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.3.72")
+    testImplementation("com.ninja-squad:springmockk:1.1.3")
 }
 
 tasks.withType<KotlinCompile> {
@@ -38,4 +38,7 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "1.8"
     }
+}
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

@@ -9,19 +9,15 @@ interface AccountService {
 
     fun getAll(): Iterable<Account>
 
-    fun get(id: Long): Account
+    fun find(id: Long): Account
 
-    fun create(accountDTO: AccountDTO): Account
+    fun create(account: AccountDTO): Account
 
-    fun update(id: Long, account: Account): Account
+    fun update(id: Long, account: AccountDTO): Account
 
     fun update(account: Account): Account
 
     fun delete(id: Long)
 
-    fun isExists(id: Long): Boolean
-
-    fun existsByNumber(number: Number): Boolean
-
-    fun getByNumber(number: Number): Account
+    fun findByNumber(number: Number): Account
 }

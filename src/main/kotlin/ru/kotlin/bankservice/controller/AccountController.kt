@@ -16,7 +16,7 @@ class AccountController (
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    fun get(@PathVariable id : Long) = accountService.get(id)
+    fun get(@PathVariable id : Long) = accountService.find(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

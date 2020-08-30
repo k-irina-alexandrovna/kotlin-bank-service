@@ -3,8 +3,9 @@ package ru.kotlin.bankservice.model.dto
 import java.math.BigDecimal
 
 data class AccountDTO(
-    val number: Number,
+    val id: Long? = null,
+    val number: Number? = null,
     val balance: BigDecimal = BigDecimal.ZERO,
-    val currency: String,
-    val userId: Long
+    val currency: String? = null,
+    val userId: Long? = null
 )

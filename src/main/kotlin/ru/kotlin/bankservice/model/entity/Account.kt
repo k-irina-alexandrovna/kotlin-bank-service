@@ -39,5 +39,5 @@ data class Account(
         val operations: MutableList<Operation>? = mutableListOf()
 
 ): AbstractBaseEntity<Long>() {
-        override fun toString()= "account: ${this.number}, user: ${user.getFullName()}"
+        override fun toString()= "account: ${this.number}, user: ${user.fullName}"
 }

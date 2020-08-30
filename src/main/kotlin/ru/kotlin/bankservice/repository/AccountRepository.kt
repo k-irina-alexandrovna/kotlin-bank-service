@@ -9,5 +9,5 @@ interface AccountRepository : JpaRepository<Account, Long> {
 
     fun existsByNumber(number: Number): Boolean
 
-    fun getByNumber(number: Number): Account
+    fun findByNumber(number: Number): Account
 }

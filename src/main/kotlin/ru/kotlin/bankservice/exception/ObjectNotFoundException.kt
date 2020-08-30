@@ -1,5 +1,5 @@
 package ru.kotlin.bankservice.exception
 
-class TransferException(
+class ObjectNotFoundException(
     override val message: String
 ) : RuntimeException(message)

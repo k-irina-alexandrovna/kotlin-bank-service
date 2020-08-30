@@ -1,5 +1,5 @@
 package ru.kotlin.bankservice.exception
 
-class EntityNotFoundException(
+class ObjectAlreadyExists(
     override val message: String
 ) : RuntimeException(message)

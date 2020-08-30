@@ -18,4 +18,6 @@ interface UserService {
     fun delete(id: Long)
 
     fun isExists(id: Long): Boolean
+
+    fun isExistsByPassport(passport: String): Boolean
 }
