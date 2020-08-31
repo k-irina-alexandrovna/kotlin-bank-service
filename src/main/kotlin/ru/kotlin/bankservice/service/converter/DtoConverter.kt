@@ -3,10 +3,12 @@ package ru.kotlin.bankservice.service.converter
 import org.springframework.core.convert.converter.Converter
 import org.springframework.stereotype.Component
 import ru.kotlin.bankservice.model.dto.AccountResponseDTO
+import ru.kotlin.bankservice.model.dto.OperationResponseDTO
 import ru.kotlin.bankservice.model.dto.TransferRequestDTO
 import ru.kotlin.bankservice.model.dto.TransferResponseDTO
 import ru.kotlin.bankservice.model.dto.UserResponseDTO
 import ru.kotlin.bankservice.model.entity.Account
+import ru.kotlin.bankservice.model.entity.Operation
 import ru.kotlin.bankservice.model.entity.User
 import ru.kotlin.bankservice.service.AccountService
 
@@ -45,5 +47,15 @@ class TransferDtoConverter(
     )
 
     private fun getAccountResponseDtoByNumber(number: Number) =
-        accountService.findByNumber(number).let { dtoConverter.convert(it) }
+        accountService.getByNumber(number).let { dtoConverter.convert(it) }
+}
+
+@Component
+class OperationDtoConverter: Converter<Operation, OperationResponseDTO> {
+
+    override fun convert(source: Operation): OperationResponseDTO = OperationResponseDTO (
+        createdTime = source.createdTime,
+        accountNumber = source.account.number,
+        amount = source.amount
+    )
 }

@@ -1,5 +1,6 @@
 package ru.kotlin.bankservice.controller
 
+import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,21 +21,25 @@ class UserController(
     private val userService: UserService,
     private val dtoConverter: UserDtoConverter
 ) {
+    @ApiOperation("Получить список клиентов")
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
     fun getAll() =
         userService.getAll().map { dtoConverter.convert(it) }
 
+    @ApiOperation("Получить данные клиента")
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.FOUND)
     fun get(@PathVariable id : Long) = userService.get(id)
         .let { dtoConverter.convert(it) }
 
+    @ApiOperation("Создать клиента")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody userRequest: UserRequestDTO) = userService.create(userRequest)
         .let { dtoConverter.convert(it) }
 
+    @ApiOperation("Обновить данные клиента")
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     fun update(
@@ -43,6 +48,7 @@ class UserController(
     ) = userService.update(id, userRequest)
         .let { dtoConverter.convert(it) }
 
+    @ApiOperation("Удалить клиента")
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     fun delete(@PathVariable id: Long) = userService.delete(id)

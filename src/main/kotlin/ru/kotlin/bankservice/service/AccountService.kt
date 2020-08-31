@@ -7,8 +7,10 @@ import ru.kotlin.bankservice.model.entity.Account
 @Transactional
 interface AccountService {
 
+    @Transactional( readOnly = true)
     fun getAll(): Iterable<Account>
 
+    @Transactional( readOnly = true)
     fun get(id: Long): Account
 
     fun create(accountRequest: AccountRequestDTO): Account
@@ -19,5 +21,6 @@ interface AccountService {
 
     fun delete(id: Long)
 
-    fun findByNumber(number: Number): Account
+    @Transactional( readOnly = true)
+    fun getByNumber(number: Number): Account
 }

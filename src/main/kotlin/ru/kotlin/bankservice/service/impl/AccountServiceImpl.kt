@@ -53,7 +53,7 @@ class AccountServiceImpl(
 
     override fun delete(id: Long) = accountRepository.deleteById(id)
 
-    override fun findByNumber(number: Number): Account =
+    override fun getByNumber(number: Number): Account =
         try {
             accountRepository.findByNumber(number)
         } catch (e: EmptyResultDataAccessException) {

@@ -17,7 +17,7 @@ data class User(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        override var id: Long = 0,
+        override var id: Long = 0L,
 
         @Column(name = "full_name", nullable = false)
         val fullName: String = "",

@@ -2,6 +2,7 @@ package ru.kotlin.bankservice.model.dto
 
 import ru.kotlin.bankservice.model.enums.Currency
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 data class UserResponseDTO (
     val id: Long,
@@ -20,4 +21,10 @@ data class AccountResponseDTO (
 data class TransferResponseDTO (
     val senderAccount: AccountResponseDTO,
     val receiverAccount: AccountResponseDTO
+)
+
+data class OperationResponseDTO (
+    val createdTime: LocalDateTime,
+    val accountNumber: Number,
+    val amount: BigDecimal
 )

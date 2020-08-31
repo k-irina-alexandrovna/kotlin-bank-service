@@ -5,6 +5,7 @@ import ru.kotlin.bankservice.exception.Error
 import ru.kotlin.bankservice.exception.ValidationException
 import ru.kotlin.bankservice.model.dto.TransferRequestDTO
 import ru.kotlin.bankservice.model.entity.Account
+import ru.kotlin.bankservice.model.entity.Operation
 import ru.kotlin.bankservice.model.enums.BankOperation
 import ru.kotlin.bankservice.service.AccountService
 import ru.kotlin.bankservice.service.OperationService
@@ -23,8 +24,8 @@ class TransferServiceImpl(
         .also { validator.validate(transferRequestDTO) }
         .run {
             with(transferRequestDTO){
-                val senderAccount = accountService.findByNumber(senderAccountNumber!!)
-                val receiverAccount = accountService.findByNumber(receiverAccountNumber!!)
+                val senderAccount = accountService.getByNumber(senderAccountNumber!!)
+                val receiverAccount = accountService.getByNumber(receiverAccountNumber!!)
                 checkAccountsBeforeTransfer(senderAccount, receiverAccount)
 
                 when(BankOperation.valueOf(operation!!)) {
@@ -37,11 +38,31 @@ class TransferServiceImpl(
     private fun makeTransfer(senderAccount: Account, receiverAccount: Account, amount: BigDecimal) = senderAccount
         .apply {  checkAccountBalance(senderAccount, amount) }
         .run {
-            senderAccount.copy(balance = senderAccount.balance.minus(amount))
-                .let { accountService.update(it) }
-            receiverAccount.copy(balance = receiverAccount.balance.plus(amount))
-                .let { accountService.update(it) }
+            makeWithdrawal(senderAccount, amount)
+            makeDeposit(receiverAccount, amount)
         }
+
+    private fun makeDeposit(account: Account, amount: BigDecimal) =
+        account.copy(balance = account.balance.plus(amount))
+            .let { accountService.update(it) }
+            .also {
+                Operation(
+                    account = account,
+                    amount = amount,
+                    operation = BankOperation.DEPOSIT
+                ).let { operationService.create(it) }
+            }
+
+    private fun makeWithdrawal(account: Account, amount: BigDecimal) =
+        account.copy(balance = account.balance.minus(amount))
+            .let { accountService.update(it) }
+            .also {
+                Operation(
+                    account = account,
+                    amount = amount,
+                    operation = BankOperation.WITHDRAWAL
+                ).let { operationService.create(it) }
+            }
 
     private fun checkAccountBalance(account: Account, amount: BigDecimal): Error? {
         if(account.balance < amount) {

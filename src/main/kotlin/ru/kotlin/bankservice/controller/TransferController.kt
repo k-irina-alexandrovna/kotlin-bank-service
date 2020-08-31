@@ -1,5 +1,6 @@
 package ru.kotlin.bankservice.controller
 
+import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,9 +18,10 @@ class TransferController(
     private val transferService : TransferService,
     private val converter: TransferDtoConverter
 ) {
+    @ApiOperation("Перевести деньги между счетами")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody transferRequestDTO: TransferRequestDTO): TransferResponseDTO {
+    fun createTransfer(@RequestBody transferRequestDTO: TransferRequestDTO): TransferResponseDTO {
         transferService.transfer(transferRequestDTO)
         return converter.convert(transferRequestDTO)
     }
