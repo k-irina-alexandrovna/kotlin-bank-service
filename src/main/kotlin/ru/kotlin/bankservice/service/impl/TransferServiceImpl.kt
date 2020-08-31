@@ -48,8 +48,7 @@ class TransferServiceImpl(
             .also {
                 Operation(
                     account = account,
-                    amount = amount,
-                    operation = BankOperation.DEPOSIT
+                    amount = amount
                 ).let { operationService.create(it) }
             }
 
@@ -59,8 +58,7 @@ class TransferServiceImpl(
             .also {
                 Operation(
                     account = account,
-                    amount = amount,
-                    operation = BankOperation.WITHDRAWAL
+                    amount = amount
                 ).let { operationService.create(it) }
             }
 
