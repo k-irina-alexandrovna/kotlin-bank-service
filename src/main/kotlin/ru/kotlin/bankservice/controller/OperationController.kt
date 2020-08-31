@@ -19,9 +19,11 @@ class OperationController(
     private val converter: OperationDtoConverter
 ) {
     @ApiOperation("Получить все операции по счёту")
-    @GetMapping("{id}")
+    @GetMapping("{number}")
     @ResponseStatus(HttpStatus.FOUND)
-    fun get(@PathVariable id : Long) = accountService.get(id)
+    fun get(
+        @PathVariable number : Number
+    ) = accountService.getByNumber(number)
         .let { operationService.findByAccount(it) }
         .map { converter.convert(it) }
 }
