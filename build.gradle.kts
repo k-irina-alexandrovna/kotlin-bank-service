@@ -27,10 +27,15 @@ dependencies {
 
     runtimeOnly("com.h2database:h2")
 
+    //Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.3.72")
     testImplementation("com.ninja-squad:springmockk:1.1.3")
+
+    //Swagger
+    implementation("io.springfox:springfox-swagger2:2.9.2")
+    implementation("io.springfox:springfox-swagger-ui:2.9.2")
 }
 
 tasks.withType<KotlinCompile> {
