@@ -1,11 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val ktlint: Configuration by configurations.creating
+
 plugins {
     id("org.springframework.boot") version "2.2.4.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
-    kotlin("jvm") version "1.3.72"
-    kotlin("plugin.spring") version "1.3.72"
-    kotlin("plugin.jpa") version "1.3.72"
+    kotlin("jvm") version "1.4.0"
+    kotlin("plugin.spring") version "1.4.0"
+    kotlin("plugin.jpa") version "1.4.0"
 }
 
 group = "ru.kotlin"
@@ -27,16 +29,19 @@ dependencies {
     implementation("com.vladmihalcea:hibernate-types-52:2.5.0")
 
     runtimeOnly("com.h2database:h2")
+    implementation("org.liquibase:liquibase-core:4.0.0")
 
-    //Test
+    // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.3.72")
     testImplementation("com.ninja-squad:springmockk:1.1.3")
 
-    //Swagger
+    // Swagger
     implementation("io.springfox:springfox-swagger2:2.9.2")
     implementation("io.springfox:springfox-swagger-ui:2.9.2")
+
+    ktlint("com.pinterest:ktlint:0.38.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -47,4 +52,21 @@ tasks.withType<KotlinCompile> {
 }
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+tasks.named("check") {
+    dependsOn(ktlintCheck)
+}
+
+val ktlintCheck by tasks.creating(JavaExec::class) {
+    description = "Check Kotlin code style."
+    classpath = ktlint
+    main = "com.pinterest.ktlint.Main"
+    args = listOf("**/build.gradle.kts", "src/**/*.kt")
+}
+
+val ktlintFormat by tasks.creating(JavaExec::class) {
+    description = "Fix Kotlin code style deviations."
+    classpath = ktlint
+    main = "com.pinterest.ktlint.Main"
+    args = listOf("-F", "src/**/*.kt")
 }
