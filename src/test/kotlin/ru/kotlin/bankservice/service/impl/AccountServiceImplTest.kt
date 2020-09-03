@@ -14,7 +14,7 @@ import ru.kotlin.bankservice.repository.AccountRepository
 import ru.kotlin.bankservice.service.AccountService
 import ru.kotlin.bankservice.service.UserService
 import ru.kotlin.bankservice.service.validators.Validator
-import java.util.*
+import java.util.Optional
 
 class AccountServiceImplTest {
 
@@ -23,7 +23,9 @@ class AccountServiceImplTest {
     private val validator = mockk<Validator>(relaxUnitFun = true)
 
     private val accountService: AccountService = AccountServiceImpl(
-        accountRepository, userService, validator
+        accountRepository,
+        userService,
+        validator
     )
 
     @Test
@@ -81,10 +83,10 @@ class AccountServiceImplTest {
             currency = Currency.RUB,
             user = user
         )
-        every { userService.isExists(any())} returns true
+        every { userService.isExists(any()) } returns true
         every { accountRepository.existsByNumber(accountDTO.number!!) } returns false
         every { validator.validate(accountDTO) } returns null
-        every { userService.get(any())} returns user
+        every { userService.get(any()) } returns user
         every { accountRepository.save(account) } returns account
 
         // when
@@ -96,7 +98,7 @@ class AccountServiceImplTest {
         assertEquals(account, newAccount)
     }
 
-    companion object{
+    companion object {
         private val user = User(
             id = 1L,
             fullName = "Иванов Иван Иванович",

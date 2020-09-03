@@ -9,6 +9,6 @@ interface OperationService {
 
     fun create(operation: Operation): Operation
 
-    @Transactional( readOnly = true)
+    @Transactional(readOnly = true)
     fun findByAccount(account: Account): Iterable<Operation>
 }

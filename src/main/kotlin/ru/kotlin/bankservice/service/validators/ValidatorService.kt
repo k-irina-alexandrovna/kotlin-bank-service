@@ -11,7 +11,7 @@ import ru.kotlin.bankservice.model.enums.Currency
 import java.math.BigDecimal
 
 @Service
-class ValidatorService: Validator {
+class ValidatorService : Validator {
 
     override fun validate(userRequest: UserRequestDTO): Error? {
         with(userRequest) {
@@ -27,29 +27,37 @@ class ValidatorService: Validator {
 
     override fun validate(accountRequest: AccountRequestDTO): Error? {
         with(accountRequest) {
-            if (number == null){
-                throw ValidationException(Error.MONDATORY_FIELD_IS_EMPTY, "Поле 'Номер счёта' должно содержать числовое значение")
+            if (number == null) {
+                throw ValidationException(
+                    Error.MONDATORY_FIELD_IS_EMPTY,
+                    "Поле 'Номер счёта' должно содержать числовое значение"
+                )
             }
             if (currency.isNullOrBlank() || !currencyExists(currency)) {
                 throw ValidationException(Error.CURRENCY_ERROR)
             }
-            if (userId == null){
-                throw ValidationException(Error.MONDATORY_FIELD_IS_EMPTY, "Поле 'Клиент' должно содержать id владельца счёта")
+            if (userId == null) {
+                throw ValidationException(
+                    Error.MONDATORY_FIELD_IS_EMPTY,
+                    "Поле 'Клиент' должно содержать id владельца счёта"
+                )
             }
             return null
         }
     }
 
     override fun validate(transferRequest: TransferRequestDTO): Error? {
-        with (transferRequest) {
+        with(transferRequest) {
             if (senderAccountNumber == null) {
                 throw ValidationException(
-                    Error.MONDATORY_FIELD_IS_EMPTY, "Поле 'Номер счёта отправителя' должно содержать числовое значение"
+                    Error.MONDATORY_FIELD_IS_EMPTY,
+                    "Поле 'Номер счёта отправителя' должно содержать числовое значение"
                 )
             }
             if (receiverAccountNumber == null) {
                 throw ValidationException(
-                    Error.MONDATORY_FIELD_IS_EMPTY, "Поле 'Номер счёта получателя' должно содержать числовое значение"
+                    Error.MONDATORY_FIELD_IS_EMPTY,
+                    "Поле 'Номер счёта получателя' должно содержать числовое значение"
                 )
             }
             if (operation.isNullOrBlank() || !bankOperationExists(operation)) {
@@ -60,7 +68,6 @@ class ValidatorService: Validator {
             }
             return null
         }
-
     }
 
     private fun currencyExists(currency: String) = try {

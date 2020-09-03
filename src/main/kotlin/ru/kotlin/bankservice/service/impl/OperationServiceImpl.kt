@@ -6,11 +6,10 @@ import ru.kotlin.bankservice.model.entity.Operation
 import ru.kotlin.bankservice.repository.OperationRepository
 import ru.kotlin.bankservice.service.OperationService
 
-
 @Service
 class OperationServiceImpl(
     private val operationRepository: OperationRepository
-): OperationService {
+) : OperationService {
 
     override fun create(operation: Operation): Operation = operationRepository.save(operation)
 

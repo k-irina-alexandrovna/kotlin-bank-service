@@ -15,26 +15,25 @@ import javax.persistence.Table
 @Table(name = "users")
 data class User(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        override var id: Long = 0L,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override var id: Long = 0L,
 
-        @Column(name = "full_name", nullable = false)
-        val fullName: String = "",
+    @Column(name = "full_name", nullable = false)
+    val fullName: String = "",
 
-        @JsonProperty("passport")
-        @Column(name = "passport", unique = true, nullable = false)
-        val passport: String,
+    @JsonProperty("passport")
+    @Column(name = "passport", unique = true, nullable = false)
+    val passport: String,
 
-        @OneToMany(
-                mappedBy = "user",
-                cascade = [CascadeType.ALL],
-                fetch = FetchType.LAZY,
-                orphanRemoval = true
-        )
-        val accounts: MutableList<Account> = mutableListOf()
+    @OneToMany(
+        mappedBy = "user",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY,
+        orphanRemoval = true
+    )
+    val accounts: MutableList<Account> = mutableListOf()
 
-): AbstractBaseEntity<Long>() {
-        override fun toString()=
-                "user: ${fullName}, passport: $passport, accounts: ${accounts.map { it.number }}"
+) : AbstractBaseEntity<Long>() {
+    override fun toString() = "user: $fullName, passport: $passport, accounts: ${accounts.map { it.number }}"
 }

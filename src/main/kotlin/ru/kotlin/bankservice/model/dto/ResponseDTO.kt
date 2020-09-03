@@ -4,13 +4,13 @@ import ru.kotlin.bankservice.model.enums.Currency
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-data class UserResponseDTO (
+data class UserResponseDTO(
     val id: Long,
     val fullName: String,
     val passport: String
 )
 
-data class AccountResponseDTO (
+data class AccountResponseDTO(
     val id: Long,
     val number: Number,
     val balance: BigDecimal,
@@ -18,12 +18,12 @@ data class AccountResponseDTO (
     val user: UserResponseDTO
 )
 
-data class TransferResponseDTO (
+data class TransferResponseDTO(
     val senderAccount: AccountResponseDTO,
     val receiverAccount: AccountResponseDTO
 )
 
-data class OperationResponseDTO (
+data class OperationResponseDTO(
     val createdTime: LocalDateTime,
     val accountNumber: Number,
     val amount: BigDecimal

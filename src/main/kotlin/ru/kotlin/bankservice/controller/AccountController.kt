@@ -14,9 +14,9 @@ import ru.kotlin.bankservice.model.dto.AccountRequestDTO
 import ru.kotlin.bankservice.service.AccountService
 import ru.kotlin.bankservice.service.converter.AccountDtoConverter
 
-@RestController()
+@RestController
 @RequestMapping("accounts")
-class AccountController (
+class AccountController(
     private val accountService: AccountService,
     private val dtoConverter: AccountDtoConverter
 ) {
@@ -30,7 +30,7 @@ class AccountController (
     @ApiOperation("Получить данные счёта")
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    fun get(@PathVariable id : Long) = accountService.get(id)
+    fun get(@PathVariable id: Long) = accountService.get(id)
         .let { dtoConverter.convert(it) }
 
     @ApiOperation("Создать счёт")

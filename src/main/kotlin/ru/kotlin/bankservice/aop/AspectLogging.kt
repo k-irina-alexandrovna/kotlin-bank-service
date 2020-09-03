@@ -21,11 +21,12 @@ class AspectLogging {
                 .also {
                     LOG.info("${joinPoint.signature.toShortString()}: ${currentTimeMillis() - startTime} ms, returned: $it")
                 }
-            }
+        }
 
     @AfterThrowing(pointcut = "execution(* ru.kotlin.bankservice.service..*.*(..))", throwing = "exception")
     fun afterThrowing(joinPoint: JoinPoint, exception: Exception) {
-        LOG.error("Exception in {}.{}(). Message: {}. Cause = {}",
+        LOG.error(
+            "Exception in {}.{}(). Message: {}. Cause = {}",
             joinPoint.signature.declaringTypeName,
             joinPoint.signature.name,
             exception.message?.let { it } ?: "NULL",

@@ -22,7 +22,7 @@ class OperationController(
     @GetMapping("{number}")
     @ResponseStatus(HttpStatus.FOUND)
     fun get(
-        @PathVariable number : Number
+        @PathVariable number: Number
     ) = accountService.getByNumber(number)
         .let { operationService.findByAccount(it) }
         .map { converter.convert(it) }

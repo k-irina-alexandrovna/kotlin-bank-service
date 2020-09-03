@@ -30,7 +30,7 @@ class UserController(
     @ApiOperation("Получить данные клиента")
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.FOUND)
-    fun get(@PathVariable id : Long) = userService.get(id)
+    fun get(@PathVariable id: Long) = userService.get(id)
         .let { dtoConverter.convert(it) }
 
     @ApiOperation("Создать клиента")

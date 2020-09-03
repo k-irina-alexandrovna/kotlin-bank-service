@@ -3,14 +3,12 @@ package ru.kotlin.bankservice.exception
 import ru.kotlin.bankservice.model.enums.BankOperation
 import ru.kotlin.bankservice.model.enums.Currency
 
-
 class ValidationException(
     error: Error,
     val data: Any? = null
-): RuntimeException(
+) : RuntimeException(
     listOfNotNull(error.name, error.message, data).joinToString(" ")
 )
-
 
 enum class Error(
     val message: String

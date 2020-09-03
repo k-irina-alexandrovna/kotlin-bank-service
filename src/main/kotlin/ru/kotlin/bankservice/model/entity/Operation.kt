@@ -25,6 +25,6 @@ data class Operation(
     @Column(name = "amount", nullable = false)
     val amount: BigDecimal
 
-): AbstractBaseEntity<Long>() {
-    override fun toString()= "${this.createdTime}, account: ${account.number}, amount: $amount"
+) : AbstractBaseEntity<Long>() {
+    override fun toString() = "${this.createdTime}, account: ${account.number}, amount: $amount"
 }

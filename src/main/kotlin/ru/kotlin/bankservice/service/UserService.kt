@@ -7,10 +7,10 @@ import ru.kotlin.bankservice.model.entity.User
 @Transactional
 interface UserService {
 
-    @Transactional( readOnly = true)
+    @Transactional(readOnly = true)
     fun getAll(): Iterable<User>
 
-    @Transactional( readOnly = true)
+    @Transactional(readOnly = true)
     fun get(id: Long): User
 
     fun create(userRequestDTO: UserRequestDTO): User
@@ -19,9 +19,9 @@ interface UserService {
 
     fun delete(id: Long)
 
-    @Transactional( readOnly = true)
+    @Transactional(readOnly = true)
     fun isExists(id: Long): Boolean
 
-    @Transactional( readOnly = true)
+    @Transactional(readOnly = true)
     fun isExistsByPassport(passport: String): Boolean
 }

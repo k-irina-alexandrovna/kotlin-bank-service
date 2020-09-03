@@ -10,7 +10,7 @@ import ru.kotlin.bankservice.model.entity.User
 import ru.kotlin.bankservice.repository.UserRepository
 import ru.kotlin.bankservice.service.UserService
 import ru.kotlin.bankservice.service.validators.Validator
-import java.util.*
+import java.util.Optional
 
 internal class UserServiceImplTest {
 
@@ -18,7 +18,8 @@ internal class UserServiceImplTest {
     private val validator = mockk<Validator>(relaxUnitFun = true)
 
     private val userService: UserService = UserServiceImpl(
-        userRepository, validator
+        userRepository,
+        validator
     )
 
     @Test

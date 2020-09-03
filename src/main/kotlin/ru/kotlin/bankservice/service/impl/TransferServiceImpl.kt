@@ -18,17 +18,17 @@ class TransferServiceImpl(
     private val accountService: AccountService,
     private val operationService: OperationService,
     private val validator: Validator
-): TransferService {
+) : TransferService {
 
     override fun transfer(transferRequestDTO: TransferRequestDTO): Unit = transferRequestDTO
         .also { validator.validate(transferRequestDTO) }
         .run {
-            with(transferRequestDTO){
+            with(transferRequestDTO) {
                 val senderAccount = accountService.getByNumber(senderAccountNumber!!)
                 val receiverAccount = accountService.getByNumber(receiverAccountNumber!!)
                 checkAccountsBeforeTransfer(senderAccount, receiverAccount)
 
-                when(BankOperation.valueOf(operation!!)) {
+                when (BankOperation.valueOf(operation!!)) {
                     BankOperation.DEPOSIT -> makeTransfer(senderAccount, receiverAccount, amount!!)
                     BankOperation.WITHDRAWAL -> makeTransfer(receiverAccount, senderAccount, amount!!)
                 }
@@ -36,7 +36,7 @@ class TransferServiceImpl(
         }
 
     private fun makeTransfer(senderAccount: Account, receiverAccount: Account, amount: BigDecimal) = senderAccount
-        .apply {  checkAccountBalance(senderAccount, amount) }
+        .apply { checkAccountBalance(senderAccount, amount) }
         .run {
             makeWithdrawal(senderAccount, amount)
             makeDeposit(receiverAccount, amount)
@@ -63,8 +63,11 @@ class TransferServiceImpl(
             }
 
     private fun checkAccountBalance(account: Account, amount: BigDecimal): Error? {
-        if(account.balance < amount) {
-            throw ValidationException(Error.BALANCE_IS_INSUFFICIENT, "Счёт: ${account.number}, текущий баланс: ${account.balance}")
+        if (account.balance < amount) {
+            throw ValidationException(
+                Error.BALANCE_IS_INSUFFICIENT,
+                "Счёт: ${account.number}, текущий баланс: ${account.balance}"
+            )
         }
         return null
     }

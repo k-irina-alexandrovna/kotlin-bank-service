@@ -17,13 +17,13 @@ class AccountServiceImpl(
     private val accountRepository: AccountRepository,
     private val userService: UserService,
     private val validator: Validator
-): AccountService {
+) : AccountService {
 
     override fun getAll(): Iterable<Account> = accountRepository.findAll()
 
     override fun get(id: Long) = accountRepository.findById(id)
         .let {
-            if(it.isPresent) {
+            if (it.isPresent) {
                 it.get()
             } else {
                 throw ObjectNotFoundException("Счёт с id $id не найден")
@@ -32,7 +32,7 @@ class AccountServiceImpl(
 
     override fun create(accountRequest: AccountRequestDTO): Account {
         validator.validate(accountRequest)
-        if(isExistsByNumber(accountRequest.number!!)){
+        if (isExistsByNumber(accountRequest.number!!)) {
             throw ObjectAlreadyExists("Счёт с номером ${accountRequest.number} уже зарегистрирован")
         }
         return Account(
@@ -44,7 +44,7 @@ class AccountServiceImpl(
     }
 
     override fun update(id: Long, accountRequest: AccountRequestDTO) = get(id)
-        .copy( balance = accountRequest.balance)
+        .copy(balance = accountRequest.balance)
         .let {
             accountRepository.save(it)
         }

@@ -20,36 +20,36 @@ import javax.persistence.Table
 @Table(name = "accounts")
 data class Account(
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        override var id: Long = 0L,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    override var id: Long = 0L,
 
-        @Column(
-                name = "number",
-                unique = true,
-                nullable = false
-        )
-        val number: Number,
+    @Column(
+        name = "number",
+        unique = true,
+        nullable = false
+    )
+    val number: Number,
 
-        @Column(name = "balance")
-        val balance: BigDecimal = BigDecimal.ZERO,
+    @Column(name = "balance")
+    val balance: BigDecimal = BigDecimal.ZERO,
 
-        @Enumerated(value = EnumType.STRING)
-        @Column(name = "currency")
-        val currency: Currency,
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "currency")
+    val currency: Currency,
 
-        @ManyToOne(cascade = [CascadeType.ALL])
-        @JoinColumn(name = "user_id")
-        val user: User,
+    @ManyToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "user_id")
+    val user: User,
 
-        @OneToMany(
-                mappedBy = "account",
-                cascade = [CascadeType.ALL],
-                fetch = FetchType.LAZY,
-                orphanRemoval = true
-        )
-        val operations: MutableList<Operation>? = mutableListOf()
+    @OneToMany(
+        mappedBy = "account",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY,
+        orphanRemoval = true
+    )
+    val operations: MutableList<Operation>? = mutableListOf()
 
-): AbstractBaseEntity<Long>() {
-        override fun toString()= "account: ${this.number}, user: ${user.fullName}"
+) : AbstractBaseEntity<Long>() {
+    override fun toString() = "account: ${this.number}, user: ${user.fullName}"
 }

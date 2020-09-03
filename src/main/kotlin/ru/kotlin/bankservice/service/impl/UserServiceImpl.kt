@@ -13,16 +13,15 @@ import ru.kotlin.bankservice.service.validators.Validator
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val validator: Validator
-): UserService
-{
+) : UserService {
 
-    override fun getAll() : Iterable<User> {
+    override fun getAll(): Iterable<User> {
         return userRepository.findAll()
     }
 
     override fun get(id: Long): User = userRepository.findById(id)
         .let {
-            if(it.isPresent) {
+            if (it.isPresent) {
                 it.get()
             } else {
                 throw ObjectNotFoundException("Клиент с id $id не найден")
@@ -42,7 +41,7 @@ class UserServiceImpl(
 
     override fun update(id: Long, userRequestDTO: UserRequestDTO): User {
         validator.validate(userRequestDTO)
-        if(!isExists(id)){
+        if (!isExists(id)) {
             throw ObjectNotFoundException("Клиент с id $id не найден")
         }
         checkIsPassportExists(userRequestDTO.passport!!)
@@ -61,7 +60,7 @@ class UserServiceImpl(
     override fun isExistsByPassport(passport: String) = userRepository.existsByPassport(passport)
 
     private fun checkIsPassportExists(passport: String): Exception? {
-        if(isExistsByPassport(passport)){
+        if (isExistsByPassport(passport)) {
             throw ObjectAlreadyExists("Клиент с паспортом $passport уже зарегистрирован")
         }
         return null

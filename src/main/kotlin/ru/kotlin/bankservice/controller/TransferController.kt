@@ -15,7 +15,7 @@ import ru.kotlin.bankservice.service.converter.TransferDtoConverter
 @RestController
 @RequestMapping("transfer")
 class TransferController(
-    private val transferService : TransferService,
+    private val transferService: TransferService,
     private val converter: TransferDtoConverter
 ) {
     @ApiOperation("Перевести деньги между счетами")
